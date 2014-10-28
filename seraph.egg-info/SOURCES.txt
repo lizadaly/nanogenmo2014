@@ -1,5 +1,7 @@
 setup.cfg
 setup.py
+secret/__init__.py
+secret/flickr-keys.py
 seraph.egg-info/PKG-INFO
 seraph.egg-info/SOURCES.txt
 seraph.egg-info/dependency_links.txt

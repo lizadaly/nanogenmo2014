@@ -29,13 +29,6 @@ chromedriver.log
 docs/_build
 docs/javascript
 docs/python
-heron/local.py
-heron/_local_tests.py
-heron/_local_qunit_settings.py
-heron/templates/nest/includes/timestamp.html
-.magpie.cookies
-.heron_qunit.db
-heron_qunit
 .coverage
 node_modules
 npm-debug.log
@@ -45,3 +38,4 @@ TAGS
 TODO
 work
 serverconf/solr/conf/_rest_managed.json
+secret
