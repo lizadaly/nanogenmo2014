@@ -13,15 +13,26 @@ from StringIO import StringIO
 import struct
 import xml.etree.ElementTree as ET
 import flickrapi
-from secret import FLICKR_KEY
+from jinja2 import Template
 
+from secret import FLICKR_KEY
 
 IA_METADATA_URL = 'https://archive.org/metadata/{}'
 
 FLICKR_USER_ID = '126377022@N07'  # The Internet Archive's Flickr ID
 MAX_PHOTOS_PER_PAGE = 5
 
+class Image(object):
+    def __init__(self, url, width, height):
+        self.url = url
+        self.width = width
+        self.height = height
+
+        
 def flickr_search():
+
+    book_images = []
+
     flickr = flickrapi.FlickrAPI(FLICKR_KEY, format='etree')
     photos = flickr.walk(user_id=FLICKR_USER_ID,
                          per_page=5,
@@ -31,10 +42,11 @@ def flickr_search():
                          sort='relevance')
 
     count = 0
+    
+    
     for photo in photos:
-        ## https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
 
-        #logging.debug(ET.tostring(photo))
+        logging.info(ET.tostring(photo))
         
         img = "https://farm{farm_id}.staticflickr.com/{server_id}/{photo_id}_{secret}.jpg".format(
             farm_id=photo.get('farm'),
@@ -45,12 +57,11 @@ def flickr_search():
         img_file.raw.decode_content = True
         img_data = img_file.raw.read()
         content_type, width, height = get_image_info(img_data)
-        print "{} / {}".format(width, height)
-
-
         
         info = flickr.photos_getInfo(photo_id=photo.get('id'), secret=photo.get('secret'))
+
         logging.debug(ET.tostring(info))
+
         for tag in info.iter('tag'):
             if tag.get('raw').startswith('bookid'):
                 bookid = tag.get('raw').replace('bookid:', '')
@@ -59,11 +70,17 @@ def flickr_search():
                 resp = requests.get(IA_METADATA_URL.format(bookid))
                                     
 
+        book_images.append(Image(url=img,
+                                 width=width,
+                                 height=height))
+                          
         #logging.debug(ET.tostring(info))
         count += 1
         if count > MAX_PHOTOS_PER_PAGE:
             break
 
+    fill_template_page(book_images)
+        
 
 # http://markasread.net/post/17551554979/get-image-size-info-using-pure-python-code
 def get_image_info(data):
@@ -101,6 +118,18 @@ def get_image_info(data):
             pass
 
     return content_type, width, height
+
+
+def fill_template_page(images):
+    template = Template('''
+<h1>Lorem ipsem</h1>
+
+{% for img in images %}
+    <img src="{{ img.url }}">
+{% endfor %}
+''')
+
+    print template.render(images=images)
 
 if __name__ == '__main__':
     flickr_search()

@@ -1,3 +1,4 @@
 # Flickr api
 flickrapi
 requests
+jinja2
