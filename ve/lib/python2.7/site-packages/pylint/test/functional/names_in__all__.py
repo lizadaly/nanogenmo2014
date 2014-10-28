@@ -1,0 +1,46 @@
+# pylint: disable=too-few-public-methods,no-self-use
+"""Test Pylint's use of __all__.
+
+* NonExistant is not defined in this module, and it is listed in
+  __all__. An error is expected.
+
+* This module imports path and republished it in __all__. No errors
+  are expected.
+"""
+
+
+from os import path
+from collections import deque
+
+__all__ = [
+    'Dummy',
+    'NonExistant',  # [undefined-all-variable]
+    'path',
+    'func',  # [undefined-all-variable]
+    'inner',  # [undefined-all-variable]
+    'InnerKlass', deque.__name__]  # [undefined-all-variable]
+
+
+class Dummy(object):
+    """A class defined in this module."""
+    pass
+
+DUMMY = Dummy()
+
+def function():
+    """Function docstring
+    """
+    pass
+
+function()
+
+class Klass(object):
+    """A klass which contains a function"""
+    def func(self):
+        """A klass method"""
+        inner = None
+        print inner
+
+    class InnerKlass(object):
+        """A inner klass"""
+        pass

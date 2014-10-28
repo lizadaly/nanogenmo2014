@@ -1,0 +1,10 @@
+#!/Users/liza/github/personal/nanogenmo/ve/bin/python2.7
+# EASY-INSTALL-ENTRY-SCRIPT: 'pylint==1.3.1','console_scripts','symilar'
+__requires__ = 'pylint==1.3.1'
+import sys
+from pkg_resources import load_entry_point
+
+if __name__ == '__main__':
+    sys.exit(
+        load_entry_point('pylint==1.3.1', 'console_scripts', 'symilar')()
+    )
