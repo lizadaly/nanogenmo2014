@@ -7,11 +7,13 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
+import requests
 import xml.etree.ElementTree as ET
 import flickrapi
 from secret import FLICKR_KEY
 
 
+IA_METADATA_URL = 'https://archive.org/metadata/{}'.
 
 FLICKR_USER_ID = '126377022@N07'  # The Internet Archive's Flickr ID
 MAX_PHOTOS_PER_PAGE = 5
@@ -42,7 +44,11 @@ def flickr_search():
         for tag in info.iter('tag'):
             if tag.get('raw').startswith('bookid'):
                 bookid = tag.get('raw').replace('bookid:', '')
-                print bookid
+
+                # Get some data from IA about it
+                resp = requests.get(IA_METADATA_URL.format(bookid))
+                print resp
+                                    
 
         #logging.debug(ET.tostring(info))
         count += 1
