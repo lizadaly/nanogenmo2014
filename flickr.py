@@ -3,9 +3,15 @@
 # This work is in the public domain http://creativecommons.org/publicdomain/zero/1.0/
 # Libraries called by this work may be commercial or have other copyright restrictions
 
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
 import xml.etree.ElementTree as ET
 import flickrapi
 from secret import FLICKR_KEY
+
+
 
 FLICKR_USER_ID = '126377022@N07'  # The Internet Archive's Flickr ID
 MAX_PHOTOS_PER_PAGE = 5
@@ -23,12 +29,22 @@ def flickr_search():
     for photo in photos:
         ## https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
 
+        #logging.debug(ET.tostring(photo))
+        
         img = "https://farm{farm_id}.staticflickr.com/{server_id}/{photo_id}_{secret}.jpg".format(
             farm_id=photo.get('farm'),
             server_id=photo.get('server'),
             photo_id=photo.get('id'),
             secret=photo.get('secret'))
-        print '<img src="{}">'.format(img)
+        #print '<img src="{}">'.format(img)
+
+        info = flickr.photos_getInfo(photo_id=photo.get('id'), secret=photo.get('secret'))
+        for tag in info.iter('tag'):
+            if tag.get('raw').startswith('bookid'):
+                bookid = tag.get('raw').replace('bookid:', '')
+                print bookid
+
+        #logging.debug(ET.tostring(info))
         count += 1
         if count > MAX_PHOTOS_PER_PAGE:
             break

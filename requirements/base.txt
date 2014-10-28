@@ -1,2 +1,3 @@
 # Flickr api
 flickrapi
+requests
