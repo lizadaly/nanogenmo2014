@@ -6,7 +6,7 @@
 
 import logging
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 requests_log = logging.getLogger("requests.packages.urllib3")
 requests_log.propagate = False
 
@@ -58,6 +58,7 @@ def flickr_search(text, tags='bookcentury1700'):
                          text=text,
                          tag_mode='all',
                          tags=tags,
+                         extras='url_o',
                          sort='relevance')
 
     count = 0
