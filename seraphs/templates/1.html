@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title>Page</title>
+    <style>
+      @font-face {
+        font-family: "EVA Hand 1";
+        src: "resources/EVA Hand 1.ttf";
+      }
+      body {
+        font-family: "EVA Hand 1";
+      }
+    </style>
+  </head>
+  <body style="background: rgb{{ color }}">
+
+    <img src="{{ images.0.url }}" style="float:right"/>
+    {% for word in words %}
+    {{ word }}
+    {% endfor %}
+  </body>
+</html>

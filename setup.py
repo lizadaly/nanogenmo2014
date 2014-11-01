@@ -18,7 +18,7 @@ install_requires = [str(r.req) for r in requirements]
 version = '0.1'
 
 setup(
-    name="seraph",
+    name="seraphs",
     version=version,
     packages=find_packages(),
     zip_safe=False,

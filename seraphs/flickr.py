@@ -94,13 +94,14 @@ def flickr_search(text, tags='bookcentury1700'):
         # Convert to greyscale
         # img = img.convert('LA')
 
-        img_dir = os.path.join(BUILD_DIR, "{}.png".format(photo.get('id')))
+        img_filename = "{}.png".format(photo.get('id'))
+        img_dir = os.path.join(BUILD_DIR, img_filename)
         if not os.path.exists(BUILD_DIR):
             os.makedirs(BUILD_DIR)
 
         im.save(img_dir)
                      
-        book_images.append(BookImage(url=img_dir,
+        book_images.append(BookImage(url=img_filename,
                                      width=im.size[0],
                                      height=im.size[1],
                                      primary_color = colors))
