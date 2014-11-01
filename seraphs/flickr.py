@@ -64,13 +64,13 @@ def flickr_search(text, tags='bookcentury1700'):
     # Randomize the result set
     photos = list(photos)
     random.shuffle(photos)
-    
+
     for photo in photos:
 
         logging.debug(ET.tostring(photo))
-        
+
         img_url = photo.get('url_o')
-        
+
         # info = flickr.photos_getInfo(photo_id=photo.get('id'), secret=photo.get('secret'))
         # logging.debug(ET.tostring(info))        
 
@@ -79,31 +79,35 @@ def flickr_search(text, tags='bookcentury1700'):
         im = Image.open(StringIO(img_file.raw.read()))
 
         # Main colors
-        colors = max(im.getcolors(im.size[0]*im.size[1]))[1]  # 2nd value in the tuple is the RGB color set
+        colors = max(im.getcolors(im.size[0] * im.size[1]))[1]  # 2nd value in the tuple is the RGB color set
 
-        hls = colorsys.rgb_to_hls(colors[0], colors[1], colors[2])
+        try:
+            hls = colorsys.rgb_to_hls(colors[0], colors[1], colors[2])
+        except TypeError:
+            continue
+
         lightness = int(hls[1])
 
         # Skip any images without a light primary color (lazy way of finding background)
         if lightness < MIN_LIGHTNESS:
             logging.debug("Skipping dark image")
             continue
-            
+
         # Convert to greyscale
         # img = img.convert('LA')
 
         img_filename = "{}.png".format(photo.get('id'))
         im.save(img_filename)
-        
+
         img_dir = os.path.join(BUILD_DIR, img_filename)
 
         im.save(img_dir)
-                     
+
         book_images.append(BookImage(url=img_filename,
                                      width=im.size[0],
                                      height=im.size[1],
-                                     primary_color = colors))
-                          
+                                     primary_color=colors))
+
         #logging.debug(ET.tostring(info))
         count += 1
         if count > MAX_PHOTOS_PER_PAGE:

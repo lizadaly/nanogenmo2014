@@ -10,7 +10,6 @@ import random
 import shutil
 
 from jinja2 import Environment, PackageLoader
-import json
 from seraphs import BUILD_DIR, THIS_DIR
 
 env = Environment(loader=PackageLoader('seraphs', 'templates'))
@@ -38,3 +37,5 @@ if __name__ == '__main__':
         rendered_template = fill_template_page(section, images, words)
         out = open(os.path.join(BUILD_DIR, 'book.html'), 'w')
         out.write(rendered_template)
+        shutil.copy(os.path.join(THIS_DIR, "templates", "styles.css"), BUILD_DIR)
+        

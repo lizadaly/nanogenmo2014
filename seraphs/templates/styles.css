@@ -1,0 +1,10 @@
+@page {
+  size: 5in 5in;
+}
+@font-face {
+    font-family: "EVA Hand 1";
+    src: "resources/EVA Hand 1.ttf";
+}
+body {
+    font-family: "EVA Hand 1";
+}
