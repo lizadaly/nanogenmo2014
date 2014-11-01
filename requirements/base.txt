@@ -5,3 +5,4 @@ jinja2
 pyflakes
 pep8
 pylint
+Pillow
