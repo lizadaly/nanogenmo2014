@@ -71,10 +71,8 @@ def flickr_search(text, tags='bookcentury1700'):
 
         logging.debug(ET.tostring(photo))
         
-        img_url = "https://farm{farm_id}.staticflickr.com/{server_id}/{photo_id}_{secret}.jpg".format(farm_id=photo.get('farm'),
-                                                                                                      server_id=photo.get('server'),
-                                                                                                      photo_id=photo.get('id'),
-                                                                                                      secret=photo.get('secret'))
+        img_url = photo.get('url_o')
+        
         # info = flickr.photos_getInfo(photo_id=photo.get('id'), secret=photo.get('secret'))
         # logging.debug(ET.tostring(info))        
 
