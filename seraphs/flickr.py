@@ -12,9 +12,7 @@ requests_log.propagate = False
 
 import requests
 import random
-import json
 from StringIO import StringIO
-import struct
 import xml.etree.ElementTree as ET
 import flickrapi
 from PIL import Image
@@ -22,12 +20,12 @@ import os.path
 import colorsys
 
 from secret import FLICKR_KEY
+from seraphs import BUILD_DIR
 
 IA_METADATA_URL = 'https://archive.org/metadata/{}'
 
 FLICKR_USER_ID = '126377022@N07'  # The Internet Archive's Flickr ID
 MAX_PHOTOS_PER_PAGE = 1
-BUILD_DIR = 'build'
 MIN_LIGHTNESS = 200
 
 class BookImage(object):
@@ -95,9 +93,9 @@ def flickr_search(text, tags='bookcentury1700'):
         # img = img.convert('LA')
 
         img_filename = "{}.png".format(photo.get('id'))
+        im.save(img_filename)
+        
         img_dir = os.path.join(BUILD_DIR, img_filename)
-        if not os.path.exists(BUILD_DIR):
-            os.makedirs(BUILD_DIR)
 
         im.save(img_dir)
                      
