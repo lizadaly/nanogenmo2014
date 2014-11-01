@@ -1,7 +1,8 @@
 # encoding: utf-8
 # Created by Liza Daly <lizadaly@gmail.com>
+#
 # This work is in the public domain http://creativecommons.org/publicdomain/zero/1.0/
-# Libraries called by this work may be commercial or have other copyright restrictions
+# Libraries used by this work may be commercial or have other copyright restrictions.
 
 import logging
 
@@ -13,7 +14,7 @@ from StringIO import StringIO
 import struct
 import xml.etree.ElementTree as ET
 import flickrapi
-from jinja2 import Template
+
 
 from secret import FLICKR_KEY
 
@@ -28,21 +29,30 @@ class Image(object):
         self.width = width
         self.height = height
 
+def get_ia_data(info):
+    '''Get metadata from the IA about the original title'''
+    for tag in info.iter('tag'):
+        if tag.get('raw').startswith('bookid'):
+            bookid = tag.get('raw').replace('bookid:', '')
+            
+            # Get some data from IA about it
+            resp = requests.get(IA_METADATA_URL.format(bookid))
+            return resp
+    
         
-def flickr_search():
-
+def flickr_search(text, tags='bookcentury1700'):
+    '''Request images from the IA Flickr account with the given century tags and the related text'''
     book_images = []
 
     flickr = flickrapi.FlickrAPI(FLICKR_KEY, format='etree')
     photos = flickr.walk(user_id=FLICKR_USER_ID,
                          per_page=5,
-                         text='bird',
+                         text=text,
                          tag_mode='all',
-                         tags='bookcentury1800',
+                         tags=tags,
                          sort='relevance')
 
     count = 0
-    
     
     for photo in photos:
 
@@ -62,14 +72,6 @@ def flickr_search():
 
         logging.debug(ET.tostring(info))
 
-        for tag in info.iter('tag'):
-            if tag.get('raw').startswith('bookid'):
-                bookid = tag.get('raw').replace('bookid:', '')
-
-                # Get some data from IA about it
-                resp = requests.get(IA_METADATA_URL.format(bookid))
-                                    
-
         book_images.append(Image(url=img,
                                  width=width,
                                  height=height))
@@ -79,8 +81,7 @@ def flickr_search():
         if count > MAX_PHOTOS_PER_PAGE:
             break
 
-    fill_template_page(book_images)
-        
+    return book_images
 
 # http://markasread.net/post/17551554979/get-image-size-info-using-pure-python-code
 def get_image_info(data):
@@ -119,17 +120,6 @@ def get_image_info(data):
 
     return content_type, width, height
 
-
-def fill_template_page(images):
-    template = Template('''
-<h1>Lorem ipsem</h1>
-
-{% for img in images %}
-    <img src="{{ img.url }}">
-{% endfor %}
-''')
-
-    print template.render(images=images)
 
 if __name__ == '__main__':
     flickr_search()
