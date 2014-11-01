@@ -7,14 +7,19 @@
 import logging
 
 logging.basicConfig(level=logging.INFO)
+requests_log = logging.getLogger("requests.packages.urllib3")
+requests_log.propagate = False
 
 import requests
+import random
 import json
 from StringIO import StringIO
 import struct
 import xml.etree.ElementTree as ET
 import flickrapi
 from PIL import Image
+import os.path
+import colorsys
 
 from secret import FLICKR_KEY
 
@@ -22,12 +27,15 @@ IA_METADATA_URL = 'https://archive.org/metadata/{}'
 
 FLICKR_USER_ID = '126377022@N07'  # The Internet Archive's Flickr ID
 MAX_PHOTOS_PER_PAGE = 1
+BUILD_DIR = 'build'
+MIN_LIGHTNESS = 200
 
 class BookImage(object):
-    def __init__(self, url, width, height):
+    def __init__(self, url, width, height, primary_color):
         self.url = url
         self.width = width
         self.height = height
+        self.primary_color = primary_color
 
 def get_ia_data(info):
     '''Get metadata from the IA about the original title'''
@@ -53,26 +61,50 @@ def flickr_search(text, tags='bookcentury1700'):
                          sort='relevance')
 
     count = 0
+
+    # Randomize the result set
+    photos = list(photos)
+    random.shuffle(photos)
     
     for photo in photos:
 
-        logging.info(ET.tostring(photo))
+        logging.debug(ET.tostring(photo))
         
         img_url = "https://farm{farm_id}.staticflickr.com/{server_id}/{photo_id}_{secret}.jpg".format(farm_id=photo.get('farm'),
                                                                                                       server_id=photo.get('server'),
                                                                                                       photo_id=photo.get('id'),
                                                                                                       secret=photo.get('secret'))
+        # info = flickr.photos_getInfo(photo_id=photo.get('id'), secret=photo.get('secret'))
+        # logging.debug(ET.tostring(info))        
+
         img_file = requests.get(img_url, stream=True)
         img_file.raw.decode_content = True
-        img = Image.open(StringIO(img_file.raw.read()))
-        
-        info = flickr.photos_getInfo(photo_id=photo.get('id'), secret=photo.get('secret'))
+        im = Image.open(StringIO(img_file.raw.read()))
 
-        logging.debug(ET.tostring(info))
+        # Main colors
+        colors = max(im.getcolors(im.size[0]*im.size[1]))[1]  # 2nd value in the tuple is the RGB color set
 
-        book_images.append(BookImage(url=img_url,
-                                     width=img.size[0],
-                                     height=img.size[1]))
+        hls = colorsys.rgb_to_hls(colors[0], colors[1], colors[2])
+        lightness = int(hls[1])
+
+        # Skip any images without a light primary color (lazy way of finding background)
+        if lightness < MIN_LIGHTNESS:
+            logging.debug("Skipping dark image")
+            continue
+            
+        # Convert to greyscale
+        # img = img.convert('LA')
+
+        img_dir = os.path.join(BUILD_DIR, "{}.png".format(photo.get('id')))
+        if not os.path.exists(BUILD_DIR):
+            os.makedirs(BUILD_DIR)
+
+        im.save(img_dir)
+                     
+        book_images.append(BookImage(url=img_dir,
+                                     width=im.size[0],
+                                     height=im.size[1],
+                                     primary_color = colors))
                           
         #logging.debug(ET.tostring(info))
         count += 1
