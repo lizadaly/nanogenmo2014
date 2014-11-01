@@ -40,3 +40,4 @@ work
 serverconf/solr/conf/_rest_managed.json
 secret
 build
+cache

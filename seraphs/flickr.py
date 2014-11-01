@@ -25,7 +25,7 @@ from seraphs import BUILD_DIR
 IA_METADATA_URL = 'https://archive.org/metadata/{}'
 
 FLICKR_USER_ID = '126377022@N07'  # The Internet Archive's Flickr ID
-MAX_PHOTOS_PER_PAGE = 1
+MAX_PHOTOS_PER_PAGE = 5
 MIN_LIGHTNESS = 200
 
 class BookImage(object):
@@ -97,7 +97,6 @@ def flickr_search(text, tags='bookcentury1700'):
         # img = img.convert('LA')
 
         img_filename = "{}.png".format(photo.get('id'))
-        im.save(img_filename)
 
         img_dir = os.path.join(BUILD_DIR, img_filename)
 
