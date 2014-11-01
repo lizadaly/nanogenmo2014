@@ -2,12 +2,25 @@
   <head>
     <title>Page</title>
     <link rel="stylesheet" href="styles.css"></link>
+    <style>
+      img {
+        max-width: 2in;
+        }
+        @page {
+        background: rgb{{ color }};
+        }
+    </style>
   </head>
   <body style="background: rgb{{ color }}">
-
-    <img src="{{ images.0.url }}" style="float:right"/>
-    {% for word in words %}
+    <p>{% for word in words[0:100] %}
     {{ word }}
     {% endfor %}
+    </p>
+    <img src="{{ images.0.url }}" style="float:right"/>
+    <p>{% for word in words[100:500] %}
+    {{ word }}
+    {% endfor %}
+    </p>
+
   </body>
 </html>

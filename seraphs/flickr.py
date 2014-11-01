@@ -26,7 +26,8 @@ IA_METADATA_URL = 'https://archive.org/metadata/{}'
 
 FLICKR_USER_ID = '126377022@N07'  # The Internet Archive's Flickr ID
 MAX_PHOTOS_PER_PAGE = 5
-MIN_LIGHTNESS = 200
+MIN_LIGHTNESS = 200  # Minimize lightness value of the image's primary (background color)
+MIN_SIZE = 300  # Minimize length or width of the image, in pixels
 
 class BookImage(object):
     def __init__(self, url, width, height, primary_color):
@@ -69,6 +70,10 @@ def flickr_search(text, tags='bookcentury1700'):
 
         logging.debug(ET.tostring(photo))
 
+        if int(photo.get('height_o')) < MIN_SIZE or int(photo.get('width_o') < MIN_SIZE):
+            logging.debug("Skipping too-small image")
+            continue
+        
         img_url = photo.get('url_o')
 
         # info = flickr.photos_getInfo(photo_id=photo.get('id'), secret=photo.get('secret'))
@@ -88,9 +93,9 @@ def flickr_search(text, tags='bookcentury1700'):
 
         lightness = int(hls[1])
 
-        # Skip any images without a light primary color (lazy way of finding background)
+        # Skip any images without a light primary color (lazy way of finding background), or those that are too small
         if lightness < MIN_LIGHTNESS:
-            logging.debug("Skipping dark image")
+            logging.debug("Skipping too-dark image")
             continue
 
         # Convert to greyscale

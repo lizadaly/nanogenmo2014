@@ -1,10 +1,14 @@
 @page {
-  size: 5in 5in;
+  size: 10in 8in;
 }
+
 @font-face {
-    font-family: "EVA Hand 1";
-    src: "resources/EVA Hand 1.ttf";
+    font-family: "Voynich 123";
+    src: url("file:///Users/liza/github/personal/nanogenmo/seraphs/resources/voynich-1.23-webfont.ttf");
 }
 body {
-    font-family: "EVA Hand 1";
+    width: 10in;
+    height: 8in;
+    font-family: "Voynich 123";
+    font-size: .1in;
 }

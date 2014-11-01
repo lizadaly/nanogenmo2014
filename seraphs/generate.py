@@ -13,6 +13,7 @@ import flickr
 import random
 import shutil
 import pickle
+import subprocess
 
 from jinja2 import Environment, PackageLoader
 from seraphs import BUILD_DIR, THIS_DIR, CACHE_DIR
@@ -61,4 +62,9 @@ if __name__ == '__main__':
         rendered_template = fill_template_page(section, images, words)
         out = open(os.path.join(BUILD_DIR, 'book.html'), 'w')
         out.write(rendered_template)
-        shutil.copy(os.path.join(THIS_DIR, "templates", "styles.css"), BUILD_DIR)
+        
+    shutil.copy(os.path.join(THIS_DIR, "templates", "styles.css"), BUILD_DIR)
+    shutil.copy(os.path.join(THIS_DIR, "resources", "EVA Hand 1.ttf"), BUILD_DIR)
+    subprocess.call(["prince", "--verbose",  "-s", os.path.join(BUILD_DIR, "styles.css"),  os.path.join(BUILD_DIR, 'book.html'), os.path.join(BUILD_DIR, "book.pdf")])
+    
+                    
