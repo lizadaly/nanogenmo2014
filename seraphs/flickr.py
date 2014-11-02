@@ -53,12 +53,12 @@ def flickr_search(text, tags='bookcentury1700'):
 
     flickr = flickrapi.FlickrAPI(FLICKR_KEY, format='etree')
     photos = flickr.walk(user_id=FLICKR_USER_ID,
-                         per_page=50,
+                         per_page=200,
                          text=text,
                          tag_mode='all',
                          tags=tags,
                          extras='url_o',
-                         sort='relevance')
+                         sort='interestingness-desc')
 
     count = 0
 
@@ -68,10 +68,10 @@ def flickr_search(text, tags='bookcentury1700'):
 
     for photo in photos:
 
-        logging.debug(ET.tostring(photo))
+        #logging.debug(ET.tostring(photo))
 
         if int(photo.get('height_o')) < MIN_SIZE or int(photo.get('width_o') < MIN_SIZE):
-            logging.debug("Skipping too-small image")
+            #logging.debug("Skipping too-small image")
             continue
         
         img_url = photo.get('url_o')
@@ -88,7 +88,10 @@ def flickr_search(text, tags='bookcentury1700'):
 
         try:
             hls = colorsys.rgb_to_hls(colors[0], colors[1], colors[2])
-        except (TypeError, ZeroDivisionError):
+        except TypeError as te:
+            logging.warn(te)
+            continue
+        except ZeroDivisionError:
             logging.error("{} {} {}".format(colors[0], colors[1], colors[2]))
             continue
 
@@ -96,7 +99,7 @@ def flickr_search(text, tags='bookcentury1700'):
 
         # Skip any images without a light primary color (lazy way of finding background), or those that are too small
         if lightness < MIN_LIGHTNESS:
-            logging.debug("Skipping too-dark image")
+            #logging.debug("Skipping too-dark image")
             continue
 
         # Convert to greyscale
@@ -117,6 +120,9 @@ def flickr_search(text, tags='bookcentury1700'):
         count += 1
         if count > MAX_PHOTOS_PER_SECTION:
             break
+
+    if count < MAX_PHOTOS_PER_SECTION:
+        logging.warn("Did not get enough images for section {}: only {}".format(text, count))
 
     return book_images
 

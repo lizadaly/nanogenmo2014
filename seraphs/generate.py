@@ -22,12 +22,12 @@ from seraphs import BUILD_DIR, THIS_DIR, CACHE_DIR
 env = Environment(loader=PackageLoader('seraphs', 'templates'))
 
 # The sections of the books that will be thematically related, based on the Voynich sections
-BOOK_SECTIONS = ('herb', 'astronomy', 'biology', 'astrology', 'medicine', 'alchemy',)
+BOOK_SECTIONS = ('botany', 'astronomy', 'biology', 'planets', 'anatomy', 'alchemy',)
 
 if not os.path.exists(CACHE_DIR):
     os.makedirs(CACHE_DIR)
 
-def fill_template_page(section_num, images, words):
+def fill_template_page(section_num, section, images, words):
 
     for i, image in enumerate(images):
         random.shuffle(words)
@@ -40,7 +40,7 @@ def fill_template_page(section_num, images, words):
             template_file = random.choice(['portrait1.html', 'portrait2.html', 'portrait3.html', 'portrait4.html'])
 
         template = env.get_template(template_file)
-        rendered = template.render(image=image, color=image.primary_color, words=words)
+        rendered = template.render(image=image, color=image.primary_color, words=words, section=section)
         out = open(os.path.join(BUILD_DIR, "{}-{}.html".format(section_num, i)), 'w')
         out.write(rendered)
 
@@ -57,7 +57,7 @@ if __name__ == '__main__':
         section_cache = os.path.join(CACHE_DIR, section + '.p')
 
         if os.path.exists(section_cache):
-            logging.debug("Loading from cache")
+            logging.debug("Loading section {} from cache".format(section))
             images = pickle.load(open(section_cache, 'rb'))
         else:
             logging.debug("{} didn't exist".format(section_cache))
@@ -66,9 +66,9 @@ if __name__ == '__main__':
             pickle.dump(images, open(section_cache, 'wb'))
 
         random.shuffle(images)
-        rendered_template = fill_template_page(i, images, words)
+        rendered_template = fill_template_page(i, section, images, words)
 
     shutil.copy(os.path.join(THIS_DIR, "templates", "styles.css"), BUILD_DIR)
     shutil.copy(os.path.join(THIS_DIR, "resources", "EVA Hand 1.ttf"), BUILD_DIR)
     html_files = glob(os.path.join(BUILD_DIR, '*.html'))
-    subprocess.call(["prince", "--verbose", "-s", os.path.join(BUILD_DIR, "styles.css")] + html_files + [os.path.join(BUILD_DIR, "book.pdf")])
+    subprocess.call(["prince", "-s", os.path.join(BUILD_DIR, "styles.css")] + html_files + [os.path.join(BUILD_DIR, "book.pdf")])

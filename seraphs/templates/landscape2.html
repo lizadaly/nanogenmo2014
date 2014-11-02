@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="styles.css"></link>
     <style>
       img {
-        max-width: 3in;
+        max-width: 2.5in;
         margin-right: 0;
         float:right;
       }
@@ -15,10 +15,10 @@
     </style>
   </head>
   <body style="background: rgb{{ color }}">
-    <div id="debug">Narrow landscape</div>
+    <div id="debug">Narrow landscape - {{ section }}</div>
       <p>
         <span class="first">{{ words.0.0 }}</span>{{ words.0[1:] }}
-        {% for word in words[1:70] %}
+        {% for word in words[1:30] %}
            {{ word }}
         {% endfor %}
       </p>
