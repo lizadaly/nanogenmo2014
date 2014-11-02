@@ -5,8 +5,8 @@
 # Libraries used by this work may be commercial or have other copyright restrictions.
 
 import logging
-
-logging.basicConfig(level=logging.DEBUG)
+import coloredlogs
+coloredlogs.install(level=logging.DEBUG)
 
 import os
 import flickr

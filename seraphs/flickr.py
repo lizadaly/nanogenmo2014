@@ -25,7 +25,7 @@ from seraphs import BUILD_DIR
 IA_METADATA_URL = 'https://archive.org/metadata/{}'
 
 FLICKR_USER_ID = '126377022@N07'  # The Internet Archive's Flickr ID
-MAX_PHOTOS_PER_PAGE = 5
+MAX_PHOTOS_PER_SECTION = 45
 MIN_LIGHTNESS = 200  # Minimize lightness value of the image's primary (background color)
 MIN_SIZE = 300  # Minimize length or width of the image, in pixels
 
@@ -88,7 +88,8 @@ def flickr_search(text, tags='bookcentury1700'):
 
         try:
             hls = colorsys.rgb_to_hls(colors[0], colors[1], colors[2])
-        except TypeError:
+        except (TypeError, ZeroDivisionError):
+            logging.error("{} {} {}".format(colors[0], colors[1], colors[2]))
             continue
 
         lightness = int(hls[1])
@@ -114,7 +115,7 @@ def flickr_search(text, tags='bookcentury1700'):
 
         #logging.debug(ET.tostring(info))
         count += 1
-        if count > MAX_PHOTOS_PER_PAGE:
+        if count > MAX_PHOTOS_PER_SECTION:
             break
 
     return book_images

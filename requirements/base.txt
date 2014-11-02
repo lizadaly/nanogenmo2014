@@ -6,4 +6,4 @@ pyflakes
 pep8
 pylint
 Pillow
-#numpy
+coloredlogs
