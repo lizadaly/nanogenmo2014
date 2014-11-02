@@ -1,5 +1,9 @@
 @page {
-  size: 10in 8in;
+    size: 10in 8in;
+    margin: 1in;
+    @top {
+
+    }
 }
 
 @font-face {
@@ -7,8 +11,11 @@
     src: url("file:///Users/liza/github/personal/nanogenmo/seraphs/resources/voynich-1.23-webfont.ttf");
 }
 body {
-    width: 10in;
-    height: 8in;
+    margin:0;
     font-family: "Voynich 123";
-    font-size: .1in;
+    font-size: .2in;
+    color: sienna;
+}
+img {
+    margin: .25in;
 }
