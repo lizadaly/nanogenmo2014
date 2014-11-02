@@ -19,17 +19,17 @@
     <div id="debug">Portrait 3-up - {{ section }}</div>
     <!-- Wide image at middle -->
 
-    <div style="height: 7in; overflow:hidden; column-count: 3; column-width: 2in;">
+    <div style="height: 8in; overflow:hidden; column-count: 3; column-width: 2in;">
       <p>
         <span class="first">{{ words.0.0 }}</span>{{ words.0[1:] }}
-        {% for word in words[1:50] %}
+        {% for word in words[1:150] %}
            {{ word }}
         {% endfor %}
       </p>
       <img src="{{ image.url }}" style=""/>    
       <p>
         <span class="first">{{ words.99.0 }}</span>{{ words.99[1:] }}        
-        {% for word in words[100:180] %}
+        {% for word in words[100:280] %}
           {{ word }}
         {% endfor %}
       </p>

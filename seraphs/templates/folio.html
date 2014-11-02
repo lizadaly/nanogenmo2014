@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>Wide landscape</title>
+    <link rel="stylesheet" href="styles.css"></link>
+    <style>
+      img {
+        width: 100%;
+        margin: auto;
+        display: block;
+      }
+      @page {
+         background-color: black;
+         background-image: url({{ image.url }});
+       }
+       h1 {
+         font-size: 100pt;
+         prince-bookmark-level: 1;
+         color:white;
+       }
+    </style>
+  </head>
+  <body>
+    <div id="debug">Folio cover - {{ section }}</div>
+    <div style="height: 2in; width: 100%; position:absolute; bottom:0;">
+      <h1>{{ word }}</h1>
+    </div>
+  </body>
+</html>

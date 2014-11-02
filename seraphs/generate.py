@@ -29,6 +29,13 @@ if not os.path.exists(CACHE_DIR):
 
 def fill_template_page(section_num, section, images, words):
 
+    # Create the title page for the folio
+    cover = env.get_template("folio.html")
+    cover_image = images.pop()
+    cover_rendered = cover.render(image=cover_image, color=cover_image.primary_color, word=words.pop(), section=section)
+    out = open(os.path.join(BUILD_DIR, "{}-000.html".format(section)), 'w')
+    out.write(cover_rendered)
+    
     for i, image in enumerate(images):
         random.shuffle(words)
 
@@ -41,7 +48,7 @@ def fill_template_page(section_num, section, images, words):
 
         template = env.get_template(template_file)
         rendered = template.render(image=image, color=image.primary_color, words=words, section=section)
-        out = open(os.path.join(BUILD_DIR, "{}-{}.html".format(section_num, i)), 'w')
+        out = open(os.path.join(BUILD_DIR, "{}-{:0>3d}.html".format(section, i+1)), 'w')
         out.write(rendered)
 
 if __name__ == '__main__':
@@ -53,7 +60,7 @@ if __name__ == '__main__':
     for f in html_files:
         os.unlink(f)
 
-    for i, section in enumerate(BOOK_SECTIONS):
+    for i, section in enumerate(BOOK_SECTIONS[0:1]):
         section_cache = os.path.join(CACHE_DIR, section + '.p')
 
         if os.path.exists(section_cache):
@@ -71,4 +78,6 @@ if __name__ == '__main__':
     shutil.copy(os.path.join(THIS_DIR, "templates", "styles.css"), BUILD_DIR)
     shutil.copy(os.path.join(THIS_DIR, "resources", "EVA Hand 1.ttf"), BUILD_DIR)
     html_files = glob(os.path.join(BUILD_DIR, '*.html'))
-    subprocess.call(["prince", "-s", os.path.join(BUILD_DIR, "styles.css")] + html_files + [os.path.join(BUILD_DIR, "book.pdf")])
+    subprocess.call(["prince",
+                     #"--verbose",
+                     "-s", os.path.join(BUILD_DIR, "styles.css")] + html_files + [os.path.join(BUILD_DIR, "book.pdf")])

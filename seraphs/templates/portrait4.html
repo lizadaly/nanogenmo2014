@@ -20,7 +20,7 @@
 
     <img src="{{ image.url }}" style=""/>    
 
-    <div style="height: 4in; overflow:hidden;">
+    <div style="height: 5in; overflow:hidden;">
       <p>
         <span class="first">{{ words.0.0 }}</span>{{ words.0[1:] }}
         {% for word in words[1:70] %}
@@ -34,7 +34,7 @@
       </p>
       <p>
         <span class="first">{{ words.126.0 }}</span>{{ words.0[126:] }}        
-        {% for word in words[127:140] %}
+        {% for word in words[127:160] %}
           {{ word }}
         {% endfor %}
       </p>

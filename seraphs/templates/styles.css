@@ -28,3 +28,6 @@ img {
     font-size: 30pt;
     line-height: 32pt;
 }
+h1 {
+    prince-bookmark-level: 2;
+}
