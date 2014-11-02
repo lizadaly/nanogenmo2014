@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <title>Portrait </title>
+    <link rel="stylesheet" href="styles.css"></link>
+    <style>
+      img {
+        max-width: 2in;
+        max-height: 3in;
+        margin: auto;
+        display: block;
+      }
+      @page {
+         background: rgb{{ color }};
+      }
+        
+    </style>
+  </head>
+  <body style="background: rgb{{ color }}">
+    <div id="debug">Portrait 3-up (image 3rd)</div>
+    <!-- Wide image at middle -->
+
+    <div style="height: 7in; overflow:hidden; column-count: 3; column-width: 2in;">
+      <p>
+        <span class="first">{{ words.0.0 }}</span>{{ words.0[1:] }}
+        {% for word in words[1:50] %}
+           {{ word }}
+        {% endfor %}
+      </p>
+      <p>
+        <span class="first">{{ words.99.0 }}</span>{{ words.99[1:] }}        
+        {% for word in words[100:180] %}
+          {{ word }}
+        {% endfor %}
+      </p>
+      <img src="{{ image.url }}" style=""/>    
+      
+    </div>
+
+  </body>
+</html>

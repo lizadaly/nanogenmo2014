@@ -37,8 +37,8 @@ def fill_template_page(section_num, images, words):
         elif image.width > image.height:  # narrow landscape
             template_file = 'landscape2.html'
         elif image.width < image.height:
-            template_file = 'portrait1.html'
-            
+            template_file = random.choice(['portrait1.html', 'portrait2.html', 'portrait3.html', 'portrait4.html'])
+
         template = env.get_template(template_file)
         rendered = template.render(image=image, color=image.primary_color, words=words)
         out = open(os.path.join(BUILD_DIR, "{}-{}.html".format(section_num, i)), 'w')
