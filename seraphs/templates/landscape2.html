@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>Narrow landscape</title>
+    <link rel="stylesheet" href="styles.css"></link>
+    <style>
+      img {
+        max-width: 3in;
+        margin-right: 0;
+        float:right;
+      }
+      @page {
+        background: rgb{{ color }};
+      }
+      
+    </style>
+  </head>
+  <body style="background: rgb{{ color }}">
+    <div id="debug">Narrow landscape</div>
+      <p>
+        <span class="first">{{ words.0.0 }}</span>{{ words.0[1:] }}
+        {% for word in words[1:70] %}
+           {{ word }}
+        {% endfor %}
+      </p>
+    <!-- Wide image at middle -->
+    <img src="{{ image.url }}" style=""/>    
+    <div style="height: 4in; overflow:hidden;">
+    <p>
+        {% for word in words[100:200] %}
+          {{ word }}
+        {% endfor %}
+      </p>
+    </div>
+    
+  </body>
+</html>

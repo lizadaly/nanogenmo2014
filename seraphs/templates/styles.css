@@ -2,10 +2,14 @@
     size: 10in 8in;
     margin: 1in;
     @top {
-
+        content: flow(debug);
     }
 }
 
+#debug {
+    flow: static(debug);
+    font-family: "Courier";
+}
 @font-face {
     font-family: "Voynich 123";
     src: url("file:///Users/liza/github/personal/nanogenmo/seraphs/resources/voynich-1.23-webfont.ttf");
@@ -18,4 +22,9 @@ body {
 }
 img {
     margin: .25in;
+}
+.first {
+    float: left;
+    font-size: 30pt;
+    line-height: 32pt;
 }

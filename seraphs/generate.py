@@ -28,13 +28,17 @@ if not os.path.exists(CACHE_DIR):
     os.makedirs(CACHE_DIR)
 
 def fill_template_page(section_num, images, words):
-    random.shuffle(words)
 
     for i, image in enumerate(images):
-        if image.width > image.height:  # landscape
-            template_file = 'landscape1.html'
+        random.shuffle(words)
 
-        template_file = 'landscape1.html'
+        if (image.width / 2) > image.height:  # wide landscape
+            template_file = 'landscape1.html'
+        elif image.width > image.height:  # narrow landscape
+            template_file = 'landscape2.html'
+        elif image.width < image.height:
+            template_file = 'portrait1.html'
+            
         template = env.get_template(template_file)
         rendered = template.render(image=image, color=image.primary_color, words=words)
         out = open(os.path.join(BUILD_DIR, "{}-{}.html".format(section_num, i)), 'w')
@@ -44,7 +48,12 @@ if __name__ == '__main__':
 
     words = [word.strip() for word in open(os.path.join(THIS_DIR, 'resources/words.txt')).readlines()]
 
-    for i, section in enumerate(BOOK_SECTIONS[0:1]):
+    # Delete previous generated output file
+    html_files = glob(os.path.join(BUILD_DIR, '*.html'))
+    for f in html_files:
+        os.unlink(f)
+
+    for i, section in enumerate(BOOK_SECTIONS):
         section_cache = os.path.join(CACHE_DIR, section + '.p')
 
         if os.path.exists(section_cache):
