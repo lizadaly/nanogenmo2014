@@ -14,6 +14,7 @@ import random
 import shutil
 import pickle
 import subprocess
+from glob import glob
 
 from jinja2 import Environment, PackageLoader
 from seraphs import BUILD_DIR, THIS_DIR, CACHE_DIR
@@ -26,45 +27,39 @@ BOOK_SECTIONS = ('herb', 'astronomy', 'biology', 'astrology', 'medicine', 'alche
 if not os.path.exists(CACHE_DIR):
     os.makedirs(CACHE_DIR)
 
-IMAGE_CACHE = os.path.join(CACHE_DIR, 'images.p')
+def fill_template_page(section_num, images, words):
+    random.shuffle(words)
 
-def fill_template_page(section, images, words):
-    if images[0].width > images[0].height:  # landscape
+    for i, image in enumerate(images):
+        if image.width > image.height:  # landscape
+            template_file = 'landscape1.html'
+
         template_file = 'landscape1.html'
-
-    template_file = 'landscape1.html'   
-    template = env.get_template(template_file)
-    return template.render(images=images, section=section, color=images[0].primary_color, words=words)
+        template = env.get_template(template_file)
+        rendered = template.render(image=image, color=image.primary_color, words=words)
+        out = open(os.path.join(BUILD_DIR, "{}-{}.html".format(section_num, i)), 'w')
+        out.write(rendered)
 
 if __name__ == '__main__':
 
-
-    # Delete
     words = [word.strip() for word in open(os.path.join(THIS_DIR, 'resources/words.txt')).readlines()]
-    random.shuffle(words)
 
-    for section in BOOK_SECTIONS[0:1]:
+    for i, section in enumerate(BOOK_SECTIONS[0:1]):
+        section_cache = os.path.join(CACHE_DIR, section + '.p')
 
-        if os.path.exists(IMAGE_CACHE):
+        if os.path.exists(section_cache):
             logging.debug("Loading from cache")
-            images = pickle.load(open(IMAGE_CACHE, 'rb'))
+            images = pickle.load(open(section_cache, 'rb'))
         else:
-            logging.debug("{} didn't exist".format(IMAGE_CACHE))
-            # Delete previous runs and re-create build dir
-            if os.path.exists(BUILD_DIR):
-                shutil.rmtree(BUILD_DIR)
-            os.makedirs(BUILD_DIR)
+            logging.debug("{} didn't exist".format(section_cache))
 
             images = flickr.flickr_search(section)
-            pickle.dump(images, open(IMAGE_CACHE, 'wb'))
+            pickle.dump(images, open(section_cache, 'wb'))
 
         random.shuffle(images)
-        rendered_template = fill_template_page(section, images, words)
-        out = open(os.path.join(BUILD_DIR, 'book.html'), 'w')
-        out.write(rendered_template)
-        
+        rendered_template = fill_template_page(i, images, words)
+
     shutil.copy(os.path.join(THIS_DIR, "templates", "styles.css"), BUILD_DIR)
     shutil.copy(os.path.join(THIS_DIR, "resources", "EVA Hand 1.ttf"), BUILD_DIR)
-    subprocess.call(["prince", "--verbose",  "-s", os.path.join(BUILD_DIR, "styles.css"),  os.path.join(BUILD_DIR, 'book.html'), os.path.join(BUILD_DIR, "book.pdf")])
-    
-                    
+    html_files = glob(os.path.join(BUILD_DIR, '*.html'))
+    subprocess.call(["prince", "--verbose", "-s", os.path.join(BUILD_DIR, "styles.css")] + html_files + [os.path.join(BUILD_DIR, "book.pdf")])
