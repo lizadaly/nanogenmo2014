@@ -30,11 +30,12 @@ MIN_LIGHTNESS = 200  # Minimize lightness value of the image's primary (backgrou
 MIN_SIZE = 300  # Minimize length or width of the image, in pixels
 
 class BookImage(object):
-    def __init__(self, url, width, height, primary_color):
+    def __init__(self, url, width, height, primary_color, src):
         self.url = url
         self.width = width
         self.height = height
         self.primary_color = primary_color
+        self.src = src
 
 def get_ia_data(info):
     '''Get metadata from the IA about the original title'''
@@ -67,7 +68,7 @@ def flickr_search(text, tags='bookcentury1700'):
     random.shuffle(photos)
 
     for photo in photos:
-
+        
         #logging.debug(ET.tostring(photo))
 
         if int(photo.get('height_o')) < MIN_SIZE or int(photo.get('width_o') < MIN_SIZE):
@@ -111,10 +112,12 @@ def flickr_search(text, tags='bookcentury1700'):
 
         im.save(img_dir)
 
+        src = 'https://www.flickr.com/photos/{}/{}'.format(photo.get('owner'), photo.get('id'))
         book_images.append(BookImage(url=img_filename,
                                      width=im.size[0],
                                      height=im.size[1],
-                                     primary_color=colors))
+                                     primary_color=colors,
+                                     src=src))
 
         #logging.debug(ET.tostring(info))
         count += 1

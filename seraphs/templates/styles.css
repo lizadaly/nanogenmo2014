@@ -29,5 +29,8 @@ img {
     line-height: 32pt;
 }
 h1 {
-    prince-bookmark-level: 2;
+    bookmark-level: 1;
+}
+figcaption {
+    font-size: 12pt;
 }
