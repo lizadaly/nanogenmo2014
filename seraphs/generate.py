@@ -60,7 +60,7 @@ if __name__ == '__main__':
     for f in html_files:
         os.unlink(f)
 
-    for i, section in enumerate(BOOK_SECTIONS[0:1]):
+    for i, section in enumerate(BOOK_SECTIONS):
         section_cache = os.path.join(CACHE_DIR, section + '.p')
 
         if os.path.exists(section_cache):
@@ -77,6 +77,7 @@ if __name__ == '__main__':
 
     shutil.copy(os.path.join(THIS_DIR, "templates", "styles.css"), BUILD_DIR)
     shutil.copy(os.path.join(THIS_DIR, "resources", "EVA Hand 1.ttf"), BUILD_DIR)
+    shutil.copy(os.path.join(THIS_DIR, "templates", "credits.html"), os.path.join(BUILD_DIR, "zz-credits.html"))
     html_files = glob(os.path.join(BUILD_DIR, '*.html'))
     subprocess.call(["prince",
                      #"--verbose",
