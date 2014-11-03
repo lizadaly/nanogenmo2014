@@ -8,13 +8,13 @@ import logging
 import coloredlogs
 coloredlogs.install(level=logging.DEBUG)
 
-import os
+from glob import glob
 import flickr
+import os
+import pickle
 import random
 import shutil
-import pickle
 import subprocess
-from glob import glob
 
 from jinja2 import Environment, PackageLoader
 from seraphs import BUILD_DIR, THIS_DIR, CACHE_DIR
@@ -35,7 +35,7 @@ def fill_template_page(section_num, section, images, words):
     cover_rendered = cover.render(image=cover_image, color=cover_image.primary_color, word=words.pop(), section=section)
     out = open(os.path.join(BUILD_DIR, "{}-000.html".format(section)), 'w')
     out.write(cover_rendered)
-    
+
     for i, image in enumerate(images):
         random.shuffle(words)
 
@@ -47,7 +47,7 @@ def fill_template_page(section_num, section, images, words):
             template_file = random.choice(['portrait1.html', 'portrait2.html', 'portrait3.html', 'portrait4.html'])
         else:
             template_file = 'portrait1.html'
-            
+
         template = env.get_template(template_file)
         rendered = template.render(image=image, color=image.primary_color, words=words, section=section)
         out = open(os.path.join(BUILD_DIR, "{}-{:0>3d}.html".format(section, i + 1)), 'w')
