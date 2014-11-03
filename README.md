@@ -59,3 +59,5 @@ Example output
 ![Page](examples/page4.png)
 ![Page](examples/page5.png)
 ![Page](examples/page6.png)
+![Page](examples/page7.png)
+![Page](examples/page8.png)
