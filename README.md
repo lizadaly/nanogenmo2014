@@ -51,3 +51,7 @@ Once it runs, it will cache the resulting images (as local pickle files) in `ser
 The output will be `seraphs/build/book.pdf`.
 
 
+Example output
+==============
+
+![Page](examples/page1.png)
