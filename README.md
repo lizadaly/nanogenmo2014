@@ -48,6 +48,6 @@ The program should go off and acquire a _lot_ of images from Flickr, randomize t
 
 Once it runs, it will cache the resulting images (as local pickle files) in `seraphs/cache` and pull a random set from those. Delete that directory to re-acquire the assets from Flickr.
 
-The output will be `serpahs/build/book.pdf`.
+The output will be `seraphs/build/book.pdf`.
 
 
