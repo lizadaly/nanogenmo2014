@@ -21,8 +21,8 @@ from seraphs import BUILD_DIR, THIS_DIR, CACHE_DIR
 
 env = Environment(loader=PackageLoader('seraphs', 'templates'))
 
-# The sections of the books that will be thematically related, based on the Voynich sections
-BOOK_SECTIONS = ('botany', 'astronomy', 'biology', 'planets', 'anatomy', 'alchemy',)
+# The sections of the books that will be thematically related, based loosely on the Voynich sections
+BOOK_SECTIONS = ('botany', 'astronomy', 'biology', 'history', 'geology', 'chemistry', 'death', 'anatomy', 'alchemy',)
 
 if not os.path.exists(CACHE_DIR):
     os.makedirs(CACHE_DIR)
@@ -45,10 +45,12 @@ def fill_template_page(section_num, section, images, words):
             template_file = 'landscape2.html'
         elif image.width < image.height:
             template_file = random.choice(['portrait1.html', 'portrait2.html', 'portrait3.html', 'portrait4.html'])
-
+        else:
+            template_file = 'portrait1.html'
+            
         template = env.get_template(template_file)
         rendered = template.render(image=image, color=image.primary_color, words=words, section=section)
-        out = open(os.path.join(BUILD_DIR, "{}-{:0>3d}.html".format(section, i+1)), 'w')
+        out = open(os.path.join(BUILD_DIR, "{}-{:0>3d}.html".format(section, i + 1)), 'w')
         out.write(rendered)
 
 if __name__ == '__main__':
@@ -80,5 +82,5 @@ if __name__ == '__main__':
     shutil.copy(os.path.join(THIS_DIR, "templates", "credits.html"), os.path.join(BUILD_DIR, "zz-credits.html"))
     html_files = glob(os.path.join(BUILD_DIR, '*.html'))
     subprocess.call(["prince",
-                     #"--verbose",
+                     # "--verbose",
                      "-s", os.path.join(BUILD_DIR, "styles.css")] + html_files + [os.path.join(BUILD_DIR, "book.pdf")])

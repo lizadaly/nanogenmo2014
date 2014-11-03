@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="styles.css"></link>
     <style>
       img {
-        max-width: 2in;
+        max-width: 3in;
         max-height: 3in;
         margin: auto;
         display: block;
@@ -16,10 +16,10 @@
     </style>
   </head>
   <body style="background: rgb{{ color }}">
-    <div id="debug">Portrait 3-up - {{ section }}</div>
+    <div id="debug">Portrait 2-up - {{ section }}</div>
     <!-- Wide image at middle -->
-
-    <div style="height: 8in; overflow:hidden; column-count: 3; column-width: 2in;">
+ 
+    <div style="height: 8in; overflow:hidden; column-count: 2; column-width: 3in;">
       <p>
         <span class="first">{{ words.0.0 }}</span>{{ words.0[1:] }}
         {% for word in words[1:150] %}
