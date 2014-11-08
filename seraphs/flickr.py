@@ -27,7 +27,7 @@ IA_METADATA_URL = 'https://archive.org/metadata/{}'
 FLICKR_USER_ID = '126377022@N07'  # The Internet Archive's Flickr ID
 MAX_PHOTOS_PER_SECTION = 45
 MIN_LIGHTNESS = 200  # Minimize lightness value of the image's primary (background color)
-MIN_SIZE = 300  # Minimize length or width of the image, in pixels
+MIN_SIZE = 300  # Minimum length or width of the image, in pixels
 
 class BookImage(object):
     def __init__(self, url, width, height, primary_color, src):
