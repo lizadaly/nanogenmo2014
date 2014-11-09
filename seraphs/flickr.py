@@ -19,7 +19,7 @@ import os.path
 import random
 import requests
 
-from secret import FLICKR_KEY
+from secret import FLICKR_KEY, FLICKR_SECRET
 from seraphs import BUILD_DIR
 
 IA_METADATA_URL = 'https://archive.org/metadata/{}'
@@ -41,7 +41,7 @@ def flickr_search(text, tags='bookcentury1700,bookcentury1600'):
     '''Request images from the IA Flickr account with the given century tags and the related text'''
     book_images = []
 
-    flickr = flickrapi.FlickrAPI(FLICKR_KEY, format='etree')
+    flickr = flickrapi.FlickrAPI(FLICKR_KEY, FLICKR_SECRET, format='etree')
     photos = flickr.walk(user_id=FLICKR_USER_ID,
                          per_page=200,
                          text=text,

@@ -34,6 +34,7 @@ Get a Flickr API key and add it to a directory called `secret`:
 ```
 mkdir secret
 cat "FLICKR_KEY = 'YOUR-KEY-HERE'" > secret/__init__.py
+cat "FLICKR_SECRET = 'YOUR-SECRET-HERE'" >> secret/__init__.py
 ```
 
 Install PrinceXML (http://princexml.com/) locally.

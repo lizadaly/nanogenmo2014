@@ -6,7 +6,7 @@
 
 import logging
 import coloredlogs
-coloredlogs.install(level=logging.DEBUG)
+coloredlogs.install(level=logging.INFO)
 
 from glob import glob
 import flickr
@@ -87,7 +87,7 @@ if __name__ == '__main__':
         rendered_template = fill_template_page(i, section, images, words, page_words, para_words)
 
     shutil.copy(os.path.join(THIS_DIR, "templates", "styles.css"), BUILD_DIR)
-    shutil.copy(os.path.join(THIS_DIR, "resources", "EVA Hand 1.ttf"), BUILD_DIR)
+    shutil.copy(os.path.join(THIS_DIR, "resources", "voynich-1.23-webfont.ttf"), BUILD_DIR)
     shutil.copy(os.path.join(THIS_DIR, "templates", "credits.html"), os.path.join(BUILD_DIR, "zz-credits.html"))
     html_files = glob(os.path.join(BUILD_DIR, '*.html'))
     subprocess.call(["prince",
