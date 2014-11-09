@@ -17,7 +17,7 @@
   <body style="background: rgb{{ color }}">
     <div id="debug">Narrow landscape - {{ section }}</div>
       <p>
-        <span class="first">{{ words.0.0 }}</span>{{ words.0[1:] }}
+        <span class="first">{{ page_words.0.0 }}</span>{{ page_words.0[1:] }}
         {% for word in words[1:30] %}
            {{ word }}
         {% endfor %}
@@ -25,7 +25,8 @@
       <!-- Wide image at middle -->
       <img src="{{ image.url }}" style=""/>
     <div style="height: 4in; overflow:hidden;">
-    <p>
+      <p>
+        {{ para_words.0 }} 
         {% for word in words[100:200] %}
           {{ word }}
         {% endfor %}

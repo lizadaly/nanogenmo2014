@@ -37,7 +37,7 @@ class BookImage(object):
         self.primary_color = primary_color
         self.src = src
 
-def flickr_search(text, tags='bookcentury1700'):
+def flickr_search(text, tags='bookcentury1700,bookcentury1600'):
     '''Request images from the IA Flickr account with the given century tags and the related text'''
     book_images = []
 
@@ -45,7 +45,7 @@ def flickr_search(text, tags='bookcentury1700'):
     photos = flickr.walk(user_id=FLICKR_USER_ID,
                          per_page=200,
                          text=text,
-                         tag_mode='all',
+                         tag_mode='any',
                          tags=tags,
                          extras='url_o',
                          sort='interestingness-desc')

@@ -21,13 +21,13 @@
 
     <div style="height: 7in; overflow:hidden; column-count: 3; column-width: 2in;">
       <p>
-        <span class="first">{{ words.0.0 }}</span>{{ words.0[1:] }}
+        <span class="first">{{ page_words.0.0 }}</span>{{ page_words.0[1:] }}
         {% for word in words[1:50] %}
            {{ word }}
         {% endfor %}
       </p>
       <p>
-        <span class="first">{{ words.99.0 }}</span>{{ words.99[1:] }}        
+        <span class="first">{{ para_words.0.0 }}</span>{{ para_words.0[1:] }}        
         {% for word in words[100:180] %}
           {{ word }}
         {% endfor %}

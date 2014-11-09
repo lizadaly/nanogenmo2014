@@ -27,18 +27,20 @@ BOOK_SECTIONS = ('botany', 'astronomy', 'biology', 'history', 'geology', 'chemis
 if not os.path.exists(CACHE_DIR):
     os.makedirs(CACHE_DIR)
 
-def fill_template_page(section_num, section, images, words):
+def fill_template_page(section_num, section, images, words, page_words, para_words):
 
     # Create the title page for the folio
     cover = env.get_template("folio.html")
     cover_image = images.pop()
-    cover_rendered = cover.render(image=cover_image, color=cover_image.primary_color, word=words.pop(), section=section)
+    cover_rendered = cover.render(image=cover_image, color=cover_image.primary_color, word=page_words.pop(), section=section)
     out = open(os.path.join(BUILD_DIR, "{}-000.html".format(section)), 'w')
     out.write(cover_rendered)
 
     for i, image in enumerate(images):
         random.shuffle(words)
-
+        random.shuffle(page_words)
+        random.shuffle(para_words)
+        
         if (image.width / 2) > image.height:  # wide landscape
             template_file = 'landscape1.html'
         elif image.width > image.height:  # narrow landscape
@@ -49,13 +51,20 @@ def fill_template_page(section_num, section, images, words):
             template_file = 'portrait1.html'
 
         template = env.get_template(template_file)
-        rendered = template.render(image=image, color=image.primary_color, words=words, section=section)
+        rendered = template.render(image=image, color=image.primary_color, words=words, section=section, page_words=page_words, para_words=para_words)
         out = open(os.path.join(BUILD_DIR, "{}-{:0>3d}.html".format(section, i + 1)), 'w')
         out.write(rendered)
 
 if __name__ == '__main__':
 
     words = [word.strip() for word in open(os.path.join(THIS_DIR, 'resources/words.txt')).readlines()]
+
+
+    # Words that start a page begin with EVA {p, f} (here, 'g', 'f'}
+    page_words = [i for i in words if i.startswith('g') or i.startswith('f')]
+
+    # Words that start paragraphs begin with {p, f, k, t} (here, 'g', 'f', 'k', 'h')
+    para_words = [i for i in words if i.startswith('g') or i.startswith('f') or i.startswith('k') or i.startswith('h')]
 
     # Delete previous generated output file
     html_files = glob(os.path.join(BUILD_DIR, '*.html'))
@@ -75,7 +84,7 @@ if __name__ == '__main__':
             pickle.dump(images, open(section_cache, 'wb'))
 
         random.shuffle(images)
-        rendered_template = fill_template_page(i, section, images, words)
+        rendered_template = fill_template_page(i, section, images, words, page_words, para_words)
 
     shutil.copy(os.path.join(THIS_DIR, "templates", "styles.css"), BUILD_DIR)
     shutil.copy(os.path.join(THIS_DIR, "resources", "EVA Hand 1.ttf"), BUILD_DIR)

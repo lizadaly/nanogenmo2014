@@ -22,18 +22,19 @@
 
     <div style="height: 5in; overflow:hidden;">
       <p>
-        <span class="first">{{ words.0.0 }}</span>{{ words.0[1:] }}
+        <span class="first">{{ page_words.0.0 }}</span>{{ page_words.0[1:] }}
         {% for word in words[1:70] %}
            {{ word }}
         {% endfor %}
       </p>
       <p>
+        {{ para_words.0 }}
         {% for word in words[100:125] %}
           {{ word }}
         {% endfor %}
       </p>
       <p>
-        <span class="first">{{ words.126.0 }}</span>{{ words.0[126:] }}        
+        <span class="first">{{ para_words.1.0 }}</span>{{ para_words.1[1:] }}        
         {% for word in words[127:160] %}
           {{ word }}
         {% endfor %}
