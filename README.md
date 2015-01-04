@@ -11,6 +11,13 @@ Generate a 50,000+ word "book" based on the Voynich Manuscript. Uses the followi
 
 The source code in this repository is in the public domain. Note that a mix of commercial and closed-source software is necessary to generate the final output.
 
+Book version
+------------
+
+A hand-curated book version is available as <a href="seraphs.pdf">seraphs.pdf</a>, or a fully laid out book is available for purchase at cost <a href="http://www.blurb.com/b/5921004-seraphs">from Blurb</a>.
+
+![Page](examples/cover-page.png)
+
 Installation
 ------------
 
@@ -20,7 +27,7 @@ Set up a virtual environment:
 virtualenv ve
 ````
 
-Ensure that you have various JPEG libraries installed (for OS X users, `brew install libjpeg` and `brew install libpng`).
+Ensure that you have various image libraries installed (for OS X users, `brew install libjpeg` and `brew install libpng`).
 
 Install the dependencies:
 
