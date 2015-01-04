@@ -14,7 +14,7 @@ The source code in this repository is in the public domain. Note that a mix of c
 Book version
 ------------
 
-A hand-curated book version is available as <a href="seraphs.pdf">seraphs.pdf</a>, or a fully laid out book is available for purchase at cost <a href="http://www.blurb.com/b/5921004-seraphs">from Blurb</a>.
+A hand-curated book version is available as <a href="https://github.com/lizadaly/nanogenmo2014/raw/master/seraphs.pdf">seraphs.pdf</a>, or a fully laid out book is available for purchase at cost <a href="http://www.blurb.com/b/5921004-seraphs">from Blurb</a>.
 
 ![Page](examples/cover-page.png)
 
