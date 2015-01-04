@@ -6,7 +6,7 @@
 
 import logging
 import coloredlogs
-coloredlogs.install(level=logging.INFO)
+coloredlogs.install(level=logging.DEBUG)
 
 from glob import glob
 import flickr
@@ -22,12 +22,16 @@ from seraphs import BUILD_DIR, THIS_DIR, CACHE_DIR
 env = Environment(loader=PackageLoader('seraphs', 'templates'))
 
 # The sections of the books that will be thematically related, based loosely on the Voynich sections
-BOOK_SECTIONS = ('botany', 'astronomy', 'biology', 'history', 'geology', 'chemistry', 'death', 'anatomy', 'alchemy',)
+# BOOK_SECTIONS = ('botany', 'astronomy', 'biology', 'history', 'geology', 'chemistry', 'death', 'anatomy', 'alchemy',)
+BOOK_SECTIONS = ('botany', 'astronomy', 'biology', 'anatomy', 'alchemy',)
+#BOOK_SECTIONS = ('botany', )
 
 if not os.path.exists(CACHE_DIR):
     os.makedirs(CACHE_DIR)
 
 def fill_template_page(section_num, section, images, words, page_words, para_words):
+    if len(images) == 0:
+        return
 
     # Create the title page for the folio
     cover = env.get_template("folio.html")
@@ -37,6 +41,7 @@ def fill_template_page(section_num, section, images, words, page_words, para_wor
     out.write(cover_rendered)
 
     for i, image in enumerate(images):
+
         random.shuffle(words)
         random.shuffle(page_words)
         random.shuffle(para_words)

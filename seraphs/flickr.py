@@ -6,8 +6,10 @@
 
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 requests_log = logging.getLogger("requests.packages.urllib3")
+requests_log.propagate = False
+requests_log = logging.getLogger("flickrapi")
 requests_log.propagate = False
 
 from PIL import Image
@@ -37,18 +39,19 @@ class BookImage(object):
         self.primary_color = primary_color
         self.src = src
 
-def flickr_search(text, tags='bookcentury1700,bookcentury1600'):
+def flickr_search(text, tags='bookcentury1700,bookcentury1600,bookcentury'):
     '''Request images from the IA Flickr account with the given century tags and the related text'''
     book_images = []
 
     flickr = flickrapi.FlickrAPI(FLICKR_KEY, FLICKR_SECRET, format='etree')
+
     photos = flickr.walk(user_id=FLICKR_USER_ID,
                          per_page=200,
                          text=text,
                          tag_mode='any',
                          tags=tags,
                          extras='url_o',
-                         sort='interestingness-desc')
+                         sort='relevance')
 
     count = 0
 
@@ -67,8 +70,11 @@ def flickr_search(text, tags='bookcentury1700,bookcentury1600'):
         img_file.raw.decode_content = True
         im = Image.open(StringIO(img_file.raw.read()))
 
-        # Main colors
+        # Number of colors (optimize for colorful images)
+        num_colors = len(im.getcolors(im.size[0] * im.size[1]))
+        
         colors = max(im.getcolors(im.size[0] * im.size[1]))[1]  # 2nd value in the tuple is the RGB color set
+
 
         try:
             hls = colorsys.rgb_to_hls(colors[0], colors[1], colors[2])
@@ -81,10 +87,14 @@ def flickr_search(text, tags='bookcentury1700,bookcentury1600'):
 
         lightness = int(hls[1])
 
-        # Skip any images without a light primary color (lazy way of finding background), or those that are too small
+        # Skip any images without a light primary color (lazy way of finding background)
         if lightness < MIN_LIGHTNESS:
             continue
 
+        if num_colors < 100000:
+            if random.randint(0, 6) > 2:
+                continue   # Prefer color
+        
         img_filename = "{}.png".format(photo.get('id'))
         img_dir = os.path.join(BUILD_DIR, img_filename)
 
