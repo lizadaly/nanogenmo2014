@@ -1,7 +1,17 @@
 Seraphs: NaNoGenMo2014
 =============
 
-Generate a 50,000+ word "book" based on the Voynich Manuscript. Uses the following resources:
+Generate a 50,000+ word "book" based on the Voynich Manuscript. On the [design and goals](https://lizadaly.com/pages/seraphs/) for the project.
+
+## Book version
+
+A hand-curated book version is available as <a href="https://github.com/lizadaly/nanogenmo2014/raw/master/seraphs.pdf">seraphs.pdf</a>, or a fully laid out book is available for purchase at cost <a href="http://www.blurb.com/b/5921004-seraphs">from Blurb</a>.
+
+![Page](examples/cover-page.png)
+
+## About the project
+
+Uses the following resources:
 
 * The Flickr API and Internet Archive Commons account to grab 18th century images based on specific themes like "biology" and "alchemy."
 * Processes the resulting illustrations to match background colors and discard undesirable images.
@@ -11,15 +21,7 @@ Generate a 50,000+ word "book" based on the Voynich Manuscript. Uses the followi
 
 The source code in this repository is in the public domain. Note that a mix of commercial and closed-source software is necessary to generate the final output.
 
-Book version
-------------
-
-A hand-curated book version is available as <a href="https://github.com/lizadaly/nanogenmo2014/raw/master/seraphs.pdf">seraphs.pdf</a>, or a fully laid out book is available for purchase at cost <a href="http://www.blurb.com/b/5921004-seraphs">from Blurb</a>.
-
-![Page](examples/cover-page.png)
-
-Installation
-------------
+### Installation
 
 Set up a virtual environment:
 
